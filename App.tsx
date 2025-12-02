@@ -38,38 +38,38 @@ const settingsReducer = (state: BraamSettings, action: Action): BraamSettings =>
     case 'RANDOMIZE':
         return {
             global: {
-                masterDuration: Math.random() * 2.9 + 0.1,
-                masterVolume: Math.random() * 0.4 + 0.5,
-                hpfFreq: Math.pow(10, Math.random() * 2 + 1.3), // 20Hz - 2kHz
-                lpfFreq: Math.pow(10, Math.random() * 1 + 3.3), // 2kHz - 20kHz
-                reverbMix: Math.random() * 0.8,
-                reverbTime: Math.random() * 3.5 + 0.5, // 0.5s - 4s
-                reverbDecay: Math.random() * 4 + 1, // 1 - 5
+                masterDuration: Math.random() * 2.5 + 1.0, // 1-3.5s (longer for braams)
+                masterVolume: Math.random() * 0.2 + 0.75, // 0.75-0.95 (louder)
+                hpfFreq: Math.pow(10, Math.random() * 0.5 + 1.3), // 20Hz - 60Hz (very low)
+                lpfFreq: Math.pow(10, Math.random() * 0.7 + 2.3), // 200Hz - 1kHz (low-pass)
+                reverbMix: Math.random() * 0.5 + 0.4, // 0.4-0.9 (more reverb)
+                reverbTime: Math.random() * 2.0 + 2.0, // 2s - 4s (long reverb)
+                reverbDecay: Math.random() * 2.0 + 2.5, // 2.5 - 4.5 (longer decay)
             },
             layers: state.layers.map(layer => {
-                const isNoise = Math.random() > 0.4;
+                const isNoise = Math.random() > 0.5;
                 // FIX: Correctly type the arrays of possible values. `keyof` was incorrect.
                 const sourceTypes: OscillatorType[] = ['sine', 'square', 'sawtooth', 'triangle'];
                 const noiseTypes: NoiseType[] = ['white', 'pink', 'brown'];
-                const attack = Math.random() * 0.8 + 0.01;
-                const hold = Math.random() * 0.5;
-                const decay = Math.random() * 0.9 + 0.1;
+                const attack = Math.random() * 0.8 + 0.2; // 0.2-1.0s (slower)
+                const hold = Math.random() * 0.8 + 0.2; // 0.2-1.0s (longer hold)
+                const decay = Math.random() * 1.0 + 0.5; // 0.5-1.5s (longer decay)
 
                 return {
                     ...layer,
-                    enabled: Math.random() > 0.3,
+                    enabled: Math.random() > 0.2, // More layers enabled
                     sourceType: isNoise ? 'noise' : sourceTypes[Math.floor(Math.random() * sourceTypes.length)],
                     noiseType: noiseTypes[Math.floor(Math.random() * noiseTypes.length)],
                     envelope: { attack, hold, decay },
                     pitch: {
-                        start: Math.pow(10, Math.random() * 3 + 1.3),
-                        end: Math.pow(10, Math.random() * 3 + 1.3),
+                        start: Math.pow(10, Math.random() * 1.3 + 1.4), // 25Hz - 200Hz (low frequencies)
+                        end: Math.pow(10, Math.random() * 1.3 + 1.3), // 20Hz - 160Hz (descending pitch)
                     },
                     pan: {
-                        start: Math.random() * 2 - 1,
-                        end: Math.random() * 2 - 1,
+                        start: Math.random() * 1.0 - 0.5, // -0.5 to 0.5 (more centered)
+                        end: Math.random() * 1.0 - 0.5,
                     },
-                    volume: Math.random() * 0.6 + 0.2,
+                    volume: Math.random() * 0.4 + 0.5, // 0.5-0.9 (louder)
                 }
             })
         };

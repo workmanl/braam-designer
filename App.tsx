@@ -38,7 +38,7 @@ const settingsReducer = (state: BraamSettings, action: Action): BraamSettings =>
     case 'RANDOMIZE':
         return {
             global: {
-                masterDuration: Math.random() * 2.5 + 1.0, // 1-3.5s (longer for braams)
+                masterDuration: Math.random() * 4.5 + 1.0, // 1-5.5s (longer for braams)
                 masterVolume: Math.random() * 0.2 + 0.75, // 0.75-0.95 (louder)
                 hpfFreq: Math.pow(10, Math.random() * 0.5 + 1.3), // 20Hz - 60Hz (very low)
                 lpfFreq: Math.pow(10, Math.random() * 0.7 + 2.3), // 200Hz - 1kHz (low-pass)

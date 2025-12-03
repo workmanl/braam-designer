@@ -16,7 +16,7 @@ export const GlobalControls: React.FC<GlobalControlsProps> = ({ settings, onUpda
                 <Knob
                     label="Duration"
                     value={settings.masterDuration}
-                    min={0.1} max={5}
+                    min={0.1} max={20}
                     onChange={v => onUpdate('masterDuration', v)}
                     unit="s"
                 />

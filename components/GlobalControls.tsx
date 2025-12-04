@@ -9,10 +9,10 @@ interface GlobalControlsProps {
 
 export const GlobalControls: React.FC<GlobalControlsProps> = ({ settings, onUpdate }) => {
   return (
-    <div>
-        <div>
+    <div className="flex flex-col gap-4">
+        <div className="bg-gray-900 rounded-lg p-4 border-l-4 border-red-500">
             <h3 className="text-lg font-bold text-white mb-4 text-center">MASTER</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 justify-items-center mb-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 justify-items-center">
                 <Knob
                     label="Duration"
                     value={settings.masterDuration}
@@ -43,8 +43,10 @@ export const GlobalControls: React.FC<GlobalControlsProps> = ({ settings, onUpda
                     logarithmic
                 />
             </div>
+        </div>
+        <div className="bg-gray-900 rounded-lg p-4 border-l-4 border-orange-500">
             <h4 className="text-md font-semibold text-white mb-3 text-center">SATURATION</h4>
-            <div className="grid grid-cols-2 gap-4 justify-items-center mb-4">
+            <div className="grid grid-cols-2 gap-4 justify-items-center">
                  <Knob
                     label="Drive"
                     value={settings.saturationDrive}
@@ -58,6 +60,8 @@ export const GlobalControls: React.FC<GlobalControlsProps> = ({ settings, onUpda
                     onChange={v => onUpdate('saturationMix', v)}
                 />
             </div>
+        </div>
+        <div className="bg-gray-900 rounded-lg p-4 border-l-4 border-yellow-500">
             <h4 className="text-md font-semibold text-white mb-3 text-center">REVERB</h4>
             <div className="grid grid-cols-3 gap-4 justify-items-center">
                  <Knob

@@ -227,7 +227,7 @@ function App() {
         {/* Right: Waveform + Controls */}
         <div className="flex flex-col gap-4">
           {/* Waveform - Compact */}
-          <div className="bg-gray-900 rounded-lg" style={{ height: '300px' }}>
+          <div className="bg-gray-900 rounded-lg" style={{ height: '140px' }}>
             <WaveformDisplay settings={settings} isPlaying={isPlaying} playbackProgress={playbackProgress} />
           </div>
 

@@ -36,6 +36,8 @@ export interface GlobalSettings {
   masterVolume: number;
   hpfFreq: number;
   lpfFreq: number;
+  saturationDrive: number;
+  saturationMix: number;
   reverbMix: number;
   reverbTime: number;
   reverbDecay: number;

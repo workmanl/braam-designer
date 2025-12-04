@@ -43,6 +43,21 @@ export const GlobalControls: React.FC<GlobalControlsProps> = ({ settings, onUpda
                     logarithmic
                 />
             </div>
+            <h4 className="text-md font-semibold text-white mb-3 text-center">SATURATION</h4>
+            <div className="grid grid-cols-2 gap-4 justify-items-center mb-4">
+                 <Knob
+                    label="Drive"
+                    value={settings.saturationDrive}
+                    min={0} max={1}
+                    onChange={v => onUpdate('saturationDrive', v)}
+                />
+                <Knob
+                    label="Mix"
+                    value={settings.saturationMix}
+                    min={0} max={1}
+                    onChange={v => onUpdate('saturationMix', v)}
+                />
+            </div>
             <h4 className="text-md font-semibold text-white mb-3 text-center">REVERB</h4>
             <div className="grid grid-cols-3 gap-4 justify-items-center">
                  <Knob

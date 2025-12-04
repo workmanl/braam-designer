@@ -42,6 +42,8 @@ const settingsReducer = (state: BraamSettings, action: Action): BraamSettings =>
                 masterVolume: Math.random() * 0.2 + 0.75, // 0.75-0.95 (louder)
                 hpfFreq: Math.pow(10, Math.random() * 0.5 + 1.3), // 20Hz - 60Hz (very low)
                 lpfFreq: Math.pow(10, Math.random() * 0.7 + 2.3), // 200Hz - 1kHz (low-pass)
+                saturationDrive: Math.random() * 0.6 + 0.2, // 0.2-0.8 (varied saturation)
+                saturationMix: Math.random() * 0.6 + 0.3, // 0.3-0.9 (wet/dry mix)
                 reverbMix: Math.random() * 0.5 + 0.4, // 0.4-0.9 (more reverb)
                 reverbTime: Math.random() * 2.0 + 2.0, // 2s - 4s (long reverb)
                 reverbDecay: Math.random() * 2.0 + 2.5, // 2.5 - 4.5 (longer decay)

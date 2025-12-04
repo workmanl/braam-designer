@@ -91,7 +91,32 @@ const buildGraph = (context: BaseAudioContext, settings: BraamSettings) => {
   const lpf = context.createBiquadFilter();
   lpf.type = 'lowpass';
   lpf.frequency.setValueAtTime(global.lpfFreq, now);
-  
+
+  // Saturation (soft clipping waveshaper)
+  const saturation = context.createWaveShaper();
+  const saturationDrive = global.saturationDrive;
+  const makeSaturationCurve = (amount: number) => {
+    const samples = 1024;
+    const curve = new Float32Array(samples);
+    const k = amount * 100; // Scale for more pronounced effect
+    for (let i = 0; i < samples; i++) {
+      const x = (i * 2 / samples) - 1;
+      // Soft clipping algorithm: tanh-like curve
+      curve[i] = (Math.exp(k * x) - Math.exp(-k * x)) / (Math.exp(k * x) + Math.exp(-k * x));
+    }
+    return curve;
+  };
+  saturation.curve = makeSaturationCurve(saturationDrive);
+  saturation.oversample = '4x'; // High quality oversampling
+
+  const saturationWet = context.createGain();
+  saturationWet.gain.setValueAtTime(global.saturationMix, now);
+  const saturationDry = context.createGain();
+  saturationDry.gain.setValueAtTime(1 - global.saturationMix, now);
+
+  const saturationMixer = context.createGain();
+  saturationMixer.gain.setValueAtTime(1, now);
+
   const reverb = context.createConvolver();
   reverb.buffer = createImpulseResponse(context, global.reverbTime, global.reverbDecay);
   const reverbWet = context.createGain();
@@ -99,17 +124,18 @@ const buildGraph = (context: BaseAudioContext, settings: BraamSettings) => {
   const reverbDry = context.createGain();
   reverbDry.gain.setValueAtTime(1 - global.reverbMix, now);
 
-  // FIX: Corrected the audio routing for the reverb effect.
-  // The old method incorrectly chained the wet signal into the dry gain node,
-  // causing volume loss or silence. The new method creates two parallel paths
-  // (wet and dry) that are mixed at the final destination.
+  // Audio routing: masterGain -> HPF -> LPF -> Saturation (wet/dry) -> Reverb (wet/dry) -> destination
   masterGain.connect(hpf).connect(lpf);
-  
-  // Dry path to destination
-  lpf.connect(reverbDry).connect(context.destination);
 
-  // Wet path to destination
-  lpf.connect(reverbWet).connect(reverb).connect(context.destination);
+  // Saturation wet/dry mix
+  lpf.connect(saturationDry).connect(saturationMixer);
+  lpf.connect(saturationWet).connect(saturation).connect(saturationMixer);
+
+  // Reverb dry path to destination
+  saturationMixer.connect(reverbDry).connect(context.destination);
+
+  // Reverb wet path to destination
+  saturationMixer.connect(reverbWet).connect(reverb).connect(context.destination);
 
 
   layers.forEach((layer: LayerSettings) => {
